@@ -12,4 +12,5 @@
 
 ## Advanced
 
-1. Write commands for the bot to do advanced stuff, like say executing programs or adding effects to provided images, etc (sorry, didn't have many ideas for this!:))
+1. Write commands for the bot to do advanced stuff, like say executing programs or adding effects to provided images, etc
+2. Add a feature for roles - when a new user joins, they can react to a message or use a command to get the language roles they want.
