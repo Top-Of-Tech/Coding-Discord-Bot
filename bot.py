@@ -2,12 +2,7 @@ import discord
 from discord.ext import commands
 import os
 
-def get_token():
-	with open("token.txt", "r") as f:
-		token = f.read().strip()
-	return token
-
-token = get_token()
+TOKEN = "TOKEN"
 
 client = commands.Bot(command_prefix = ".cs ")
 
@@ -42,4 +37,4 @@ for filename in os.listdir('./cogs'):
 		print(f"cogs.{filename[:-3]}")
 		client.load_extension(f"cogs.{filename[:-3]}")
 
-client.run(token)
+client.run(TOKEN)
