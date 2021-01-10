@@ -10,7 +10,8 @@ class Admin(commands.Cog):
 	@commands.has_any_role('Admin', 'Owner')
 	async def loadMembers(self, ctx):
 		async for member in ctx.guild.fetch_members(limit = None):
-			self.client.db.insert(table = "Members", values = (member.id, member.name, 0, 0), ignore = True)
+			print(member.name)
+			print(self.client.db.insert(table = "Members", values = (member.id, member.name, 0, 0)))
 
 def setup(client):
 	client.add_cog(Admin(client))
