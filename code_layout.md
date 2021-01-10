@@ -6,8 +6,8 @@ The bot uses an SQLITE3 database to maintain records. As of now, it has three ta
 The database for the client is defined as `client.db`. To insert, update, delete or fetch records, use code like this:
 ```py
 
-# INSERT IGNORE INTO table VALUES(values);
-client.db.insert(table = "Members", values = (100011100000, "UserName", 0, 0), ignore =  True)
+# INSERT INTO table VALUES(values);
+client.db.insert(table = "Members", values = (100011100000, "UserName", 0, 0))
 
 # UPDATE table SET command WHERE condition;
 client.db.update(table = "Members", command = "MsgsSent = 100", condition = "UserID = 11111111111")
