@@ -14,3 +14,8 @@
 ## class PythonAddict - 10/01/2021 - Added Help Command
 1. Added Help command
 2. Created bot_help.py for contributors to add documentation for their commands
+
+## class PythonAddict - 10/01/2021 - Added closeReport Command
+1. Added a closeReport command
+2. Added aliases for each command
+3. Fixed bugs

@@ -20,6 +20,7 @@ class Moderation(commands.Cog):
 			await ctx.send(f"Was not able to ban `{member}`")
 			await ctx.send(f"Error:\n```{e}```")
 
+# ---------------------------------------------------
 
 	# Purge Messages
 	@commands.command()
@@ -45,6 +46,7 @@ class Moderation(commands.Cog):
 		await ctx.channel.delete_messages(msg)
 		await ctx.send(f"Purged {limit} messages of {member.mention}", delete_after=3)
 
+# ---------------------------------------------------
 
 	# Kick a user
 	@commands.command()
@@ -57,9 +59,10 @@ class Moderation(commands.Cog):
 			await ctx.send(f"Was not able to kick `{member}`")
 			await ctx.send(f"Error:\n```{e}```")
 
+# ---------------------------------------------------
 
 	# List the Modlogs of a user
-	@commands.command()
+	@commands.command(aliases = ["ll"])
 	@commands.has_any_role('Admin', 'Owner')
 	async def listlogs(self, ctx, member_id):
 		
@@ -85,6 +88,7 @@ class Moderation(commands.Cog):
 		
 		await ctx.send(embed = embedVar)
 
+# ---------------------------------------------------
 
 	# Report a user
 	@commands.command()
@@ -98,15 +102,17 @@ class Moderation(commands.Cog):
 
 		embed = discord.Embed(title = "New Report", description = f"From: {ctx.author.mention}\nAgainst: {member.mention}", color = random_colour())
 		embed.add_field(name = "Reason", value = f"```{reason}```", inline=False)
-		text = f"Time Reported: {ctx.message.created_at.strftime('%d-%m-%y at %H:%M')}"
+		text = f"Time Reported: {ctx.message.created_at.strftime('%d-%m-%y at %H:%M')}\nID: {n + 1}"
 		embed.add_field(name = "Info", value = text, inline = False)
 		await self.client.logs_channel.send(embed = embed)
 		await ctx.message.delete()
 		await ctx.send(f"Reported {member.mention} for {reason}.")
 
+# ---------------------------------------------------
 
 	# List reports
-	@commands.command()
+	@commands.command(aliases = ["lr"])
+	@commands.has_any_role('Admin', 'Owner')
 	async def listreports(self, ctx, resolved = 0, size = 5):
 
 		logs = self.client.db.select(
@@ -129,6 +135,23 @@ class Moderation(commands.Cog):
 		
 		await ctx.send(embed = embedVar)
 
+# ---------------------------------------------------
+
+	# Mark a report as resloved(1)
+	@commands.command(aliases = ["cr"])
+	@commands.has_any_role('Admin', 'Owner')
+	async def closereport(self, ctx, report_id):
+		report = self.client.db.update(
+			table = "Reports",
+			command = "Resolved = 1",
+			condition = f"ID = {int(report_id)}")
+		if report == 1:
+			await ctx.send(f"Closed report {report_id} successfully.")
+		else:
+			await ctx.send("Was not able to close report!")
+
+# ---------------------------------------------------
+
 	@commands.Cog.listener()
 	async def on_message_edit(self, before, after):
 		if before.author.id != self.client.user.id:
@@ -140,6 +163,7 @@ class Moderation(commands.Cog):
 			embed.add_field(name = "Info", value = text, inline = False)
 			await self.client.logs_channel.send(embed = embed)
 
+# ---------------------------------------------------
 
 	@commands.Cog.listener()
 	async def on_message_delete(self, before):
