@@ -12,12 +12,12 @@ def get_token():
 	return token
 
 token = get_token()
-DB_PATH = ".\\cogs\\ConnectionServerdb.db"
-LOGS_CHANNEL = "Your logs channel id as a string"
+DB_PATH = "" # Path to DB
+LOGS_CHANNEL = #Staff channel id as an integer
 
 
 class database():
-	def __init__(self, db = ".\\cogs\\ConnectionServerdb.db"):
+	def __init__(self, db):
 		self.Database = connect(db)
 		self.cursor = self.Database.cursor()
 
@@ -55,11 +55,15 @@ class database():
 		except sqlite3.Error as e:
 			return e
 
+# ---------------------------------------------------
+
 intents = discord.Intents.default()
 intents.messages = True
+intents.members = True
 client = commands.Bot(command_prefix = ".cs ", intents = intents, help_command = None)
 client.db = database(DB_PATH)
 
+# ---------------------------------------------------
 
 for filename in os.listdir('./cogs'):
 	if filename.endswith(".py"):
@@ -69,10 +73,26 @@ for filename in os.listdir('./cogs'):
 def random_colour():
 	return discord.Colour.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
-@client.listen('on_ready')
-async def pr():
+# ---------------------------------------------------
+
+@client.listen()
+async def on_ready():
 	print("Ready!")
 	client.logs_channel = await client.fetch_channel(LOGS_CHANNEL)
+
+# ---------------------------------------------------
+
+@client.listen()
+async def on_member_join(member):
+	print(member.name, client.db.insert(table = "Members", values = (member.id, member.name, 0, 0)))
+
+# ---------------------------------------------------
+
+@client.listen()
+async def on_user_update(before, after):
+	print(before.name, client.db.update(table = "Members", command = f"Username = '{after.name}'", condition = f"UserID = {before.id}"))
+
+# ---------------------------------------------------
 
 @client.command()
 @commands.has_any_role('Owner', 'Admin')
@@ -88,17 +108,18 @@ async def reload(ctx, *extension):
 	if passed != []: await ctx.send(f"Reloaded the extensions `{passed}` succesfully!")
 	if failed != []: await ctx.send(f"Unable to load extensions: `{failed}`")
 
+# ---------------------------------------------------
 
 @client.command()
 async def help(ctx, commandHelp = None):
-	command_help = commandHelp.lower().strip()
-	if command_help is None:
+	if commandHelp is None:
 		embed = discord.Embed(title = "Help", description = "Help for categories", color = random_colour())
 
 		for num, key in enumerate(help_descriptions.keys()):
 			embed.add_field(name = key, value = help_descriptions[key]["Description"], inline = False)
 
 	else:
+		command_help = commandHelp.lower().strip()
 		embed = discord.Embed(title = f"Help: {command_help.capitalize()}", description = "", colour = random_colour())
 
 		if command_help.capitalize() in help_descriptions.keys():
@@ -118,6 +139,7 @@ async def help(ctx, commandHelp = None):
 
 	await ctx.send(embed=embed)
 
+# ---------------------------------------------------
 
 @client.listen('on_message')
 async def process_msg(message):
@@ -134,6 +156,8 @@ async def process_msg(message):
 		c = client.db.update(table = "Members", command = f"MsgsSent = {m_count}", condition = f"UserID = {user_id}")
 	except:
 		pass
+
+# ---------------------------------------------------
 
 try:
 	client.run(token)
