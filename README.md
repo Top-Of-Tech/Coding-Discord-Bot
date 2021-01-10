@@ -16,10 +16,12 @@ To start contributing, make sure you've joined our server, and our GitHub organi
 
 6. You can add cogs in the cogs folder, and the bot will automatically load them.
 
-7. Once you finish all your changes to the bot, make sure you add a few lines at the end of `updates.md` stating what changes you made.
+7. Once you finish all your changes to the bot, make sure you update the help commands in `bot_help.py`
 
-8. Then push it to the **fork that you created** and then open an Pull Request. Please make sure to remove all sensitive information like the bot token, the log channel id, and all records in the database.
+8. Once you finish all your changes to the bot, make sure you add a few lines at the end of `updates.md` stating what changes you made.
 
-9. Please **do not** make changes to `/cogs/Admin.py`, `/cogs/Moderation.py` and `bot.py`, except for the setup. Any Pull Requests with changes to these files other than the above mentioned 8 instructions **will NOT be accepted**
+9. Then push it to the **fork that you created** and then open an Pull Request. Please make sure to remove all sensitive information like the bot token, the log channel id, and all records in the database.
 
-10. Trying to change the bot in any way to **obtain data meant only for staff, or private data will result in a warn/kick/ban.**
+10. Please **do not** make changes to `/cogs/Admin.py`, `/cogs/Moderation.py` and `bot.py`, except for the setup. Any Pull Requests with changes to these files other than the above mentioned 9 instructions **will NOT be accepted**
+
+11. Trying to change the bot in any way to **obtain data meant only for staff, or private data will result in a warn/kick/ban.**

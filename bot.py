@@ -3,6 +3,8 @@ from discord.ext import commands
 import os
 from sqlite3 import connect
 import sqlite3
+from bot_help import help_descriptions, complete_dict
+import random
 
 def get_token():
 	with open("token.txt", "r") as f:
@@ -10,8 +12,8 @@ def get_token():
 	return token
 
 token = get_token()
-DB_PATH = "" # Create a database and place its path here
-LOGS_CHANNEL = "Your Logs Channel as an integer"
+DB_PATH = ".\\cogs\\ConnectionServerdb.db"
+LOGS_CHANNEL = "Your logs channel id as a string"
 
 
 class database():
@@ -37,12 +39,9 @@ class database():
 		except sqlite3.Error as e:
 			return e
 
-	def insert(self, table, values: tuple, ignore = False):
+	def insert(self, table, values: tuple):
 		try:
-			if ignore:
-				self.cursor.execute(f"INSERT IGNORE INTO {table} VALUES {values};")
-			else:
-				self.cursor.execute(f"INSERT INTO {table} VALUES {values};")
+			self.cursor.execute(f"INSERT INTO {table} VALUES {values};")
 			self.Database.commit()
 			return 1
 		except sqlite3.Error as e:
@@ -58,7 +57,7 @@ class database():
 
 intents = discord.Intents.default()
 intents.messages = True
-client = commands.Bot(command_prefix = ".cs ", intents = intents)
+client = commands.Bot(command_prefix = ".cs ", intents = intents, help_command = None)
 client.db = database(DB_PATH)
 
 
@@ -67,13 +66,16 @@ for filename in os.listdir('./cogs'):
 		print(f"cogs.{filename[:-3]}")
 		client.load_extension(f"cogs.{filename[:-3]}")
 
+def random_colour():
+	return discord.Colour.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+
 @client.listen('on_ready')
 async def pr():
 	print("Ready!")
-	client.staff_channel = await client.fetch_channel(STAFF_CHANNEL)
+	client.logs_channel = await client.fetch_channel(LOGS_CHANNEL)
 
 @client.command()
-@commands.has_any_role(self.client.Owner_Role, self.client.Admin_Role)
+@commands.has_any_role('Owner', 'Admin')
 async def reload(ctx, *extension):
 	failed = []
 	passed = []
@@ -85,6 +87,36 @@ async def reload(ctx, *extension):
 			failed.append(i)
 	if passed != []: await ctx.send(f"Reloaded the extensions `{passed}` succesfully!")
 	if failed != []: await ctx.send(f"Unable to load extensions: `{failed}`")
+
+
+@client.command()
+async def help(ctx, commandHelp = None):
+	command_help = commandHelp.lower().strip()
+	if command_help is None:
+		embed = discord.Embed(title = "Help", description = "Help for categories", color = random_colour())
+
+		for num, key in enumerate(help_descriptions.keys()):
+			embed.add_field(name = key, value = help_descriptions[key]["Description"], inline = False)
+
+	else:
+		embed = discord.Embed(title = f"Help: {command_help.capitalize()}", description = "", colour = random_colour())
+
+		if command_help.capitalize() in help_descriptions.keys():
+			h = help_descriptions[command_help.capitalize()]
+			for key in help_descriptions[command_help.capitalize()].keys():
+				embed.add_field(name = key, value = h[key], inline = False)
+
+		elif command_help in complete_dict.keys():
+			embed.add_field(name = f".cs {command_help}", value = complete_dict[command_help], inline = False)
+
+		else:
+			embed.add_field(name = "Not Found", value = "Command/Category not found!", inline = False)
+
+	embed.set_footer(text=f"Called by {ctx.author.display_name}.")
+	embed.set_author(name=client.user.display_name)
+	embed.set_thumbnail(url=client.user.avatar_url)
+
+	await ctx.send(embed=embed)
 
 
 @client.listen('on_message')

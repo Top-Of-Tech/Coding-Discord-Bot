@@ -14,7 +14,7 @@ class Moderation(commands.Cog):
 	async def ban(self, ctx, member: discord.Member, reason):
 		try:
 			await ctx.guild.ban(member, reason=reason)
-			await ctx.send(f"Succesfully banned {member}")
+			await ctx.send(f"Successfully banned {member}")
 			print(f"Banned {member}")
 		except Exception as e:
 			await ctx.send(f"Was not able to ban `{member}`")
@@ -90,11 +90,19 @@ class Moderation(commands.Cog):
 	@commands.command()
 	async def report(self, ctx, member: discord.Member, *reason):
 		reason = " ".join(reason).strip()
+
 		n = len(self.client.db.select(table = "Reports", columns = "ID", condition = "ID > 0"))
 		t = datetime.datetime.utcnow()
 		form = t.strftime("%H:%M-%d-%m-%y")
-		self.client.db.insert(table = "Reports", values = (n + 1, ctx.author.id, member.id, reason, form,0))
-		await ctx.send(f"Reported {member.display_name} for {reason}.")
+		self.client.db.insert(table = "Reports", values = (n + 1, ctx.author.id, member.id, reason, form, 0))
+
+		embed = discord.Embed(title = "New Report", description = f"From: {ctx.author.mention}\nAgainst: {member.mention}", color = random_colour())
+		embed.add_field(name = "Reason", value = f"```{reason}```", inline=False)
+		text = f"Time Reported: {ctx.message.created_at.strftime('%d-%m-%y at %H:%M')}"
+		embed.add_field(name = "Info", value = text, inline = False)
+		await self.client.logs_channel.send(embed = embed)
+		await ctx.message.delete()
+		await ctx.send(f"Reported {member.mention} for {reason}.")
 
 
 	# List reports
@@ -127,9 +135,10 @@ class Moderation(commands.Cog):
 			embed = discord.Embed(title = "Edited Message", description = before.channel.mention, color = random_colour())
 			embed.add_field(name = "Before", value = f"```{before.content}```", inline = True)
 			embed.add_field(name = "After", value = f"```{after.content}```", inline = True)
-			text = f"Time: {before.created_at}\nEdited at: {before.edited_at}\nMessage URL: {before.jump_url}\nMessage ID: {before.id}"
+			embed.add_field(name = "Author", value = f"{before.author.mention}")
+			text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nEdited at: {after.edited_at.strftime('%d-%m-%y at %H:%M')}\nMessage URL: {before.jump_url}\nMessage ID: {before.id}"
 			embed.add_field(name = "Info", value = text, inline = False)
-			await self.client.staff_channel.send(embed = embed)
+			await self.client.logs_channel.send(embed = embed)
 
 
 	@commands.Cog.listener()
@@ -137,9 +146,9 @@ class Moderation(commands.Cog):
 		if before.author.id != self.client.user.id:
 			embed = discord.Embed(title = "Deleted Message", description = before.channel.mention, color = random_colour())
 			embed.add_field(name = "Message", value = f"```{before.content}```", inline = True)
-			text = f"Time: {before.created_at}\nMessage ID: {before.id}"
+			text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
 			embed.add_field(name = "Info", value = text, inline = False)
-			await self.client.staff_channel.send(embed = embed)
+			await self.client.logs_channel.send(embed = embed)
 
 
 def random_colour():

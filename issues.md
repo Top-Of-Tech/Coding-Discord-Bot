@@ -2,8 +2,7 @@
 
 ## Beginner
 
-1. Beautify the `.cs help` command. Feel free to use embeds, images, etc.
-2. Create commands like `.cs github` or `.cs projects` to provide links to our Github Organisation Page
+1. Create commands like `.cs github` or `.cs projects` to provide links to our Github Organisation Page
 
 ## Intermediate
 
