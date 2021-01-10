@@ -22,3 +22,6 @@ venv.bak/
 
 # PyCharm Project settings
 .idea/
+
+# Database
+./cogs/ConnectionServerdb.db
