@@ -12,11 +12,17 @@ help_descriptions = \
         "report": "Report a user.\nUsage: `.cs report (member) (reason)`",
         "listlogs": "List the Modlogs of a user.\n Usage:\n`.cs listlogs (user id)` or `.cs ll (user id)`\nOnly Admins and Owners can use this!",
         "listreports": "List the reports created either resolved(1) or not resolved(0).\nUsage:\n`.cs listreports <resolved> <size>` or `.cs lr <resolved> <size>`",
-        "closereport": "Close a report. \nUsage:\n`.cs closereport (report id)` or `.cs cr (report id)`\nCan only be used by Admins and Owners!"
+        "closereport": "Close a report. \nUsage:\n`.cs closereport (report id)` or `.cs cr (report id)`\nCan only be used by Admins and Owners!",
+        "createrole": "Add a language role to the database, with a unique key for members to use.\nUsage:\n`.cs createrole (role id) (role key)`\nCan only be used by Admins and Owners!",
+        "deleterole": "Remove a language role from the database/\nUsage\n`.cs deleterole (role id)\nCan only be used by Admins and Owners!"
     },
     "Admin": {
         "Description": "Commands: `.cs loadMembers`",
         "loadMembers": "Update the database to include the latest members that may have joined when the bot was down.\nUsage:\n`.cs loadMembers` or `.cs lm`\nOnly Owners can use this!"
+    },
+    "Roles": {
+        "Description": "Commands: `.cs getrole`",
+        "getrole": "Get a role using its key.\nUsage:\n`.cs getrole (role key)`."
     }
 }
 # Do NOT modify this:

@@ -19,3 +19,8 @@
 1. Added a closeReport command
 2. Added aliases for each command
 3. Fixed bugs
+
+## class PythonAddict - 12/01/2021 - Added getrole, createrole, and deleterole Command
+1. Added createrole command to add language roles to the DB
+2. Added deleterole command to delete language roles from the DB
+3. Added getrole command to obtain language roles
