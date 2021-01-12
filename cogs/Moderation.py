@@ -152,6 +152,35 @@ class Moderation(commands.Cog):
 
 # ---------------------------------------------------
 
+	# Allow mods to add language roles
+	@commands.command()
+	@commands.has_any_role('Admin', 'Owner')
+	async def createrole(self, ctx, role_id, role_key):
+		role_name = ctx.guild.get_role(int(role_id)).name
+		report = self.client.db.insert(table = "Roles", values = (role_id, role_name, role_key))
+		if report == 1:
+			embed = discord.Embed(title = "New Language Role", description = f"{role_name} - {role_key}", color = random_colour())
+			embed.set_footer(text = f"Called by: {ctx.author.display_name}")
+			embed.set_author(name = self.client.user.display_name)
+			embed.set_thumbnail(url = ctx.guild.icon_url)
+			await ctx.send(embed = embed)
+		else:
+			await ctx.send(f"Error:\n```\n{report}```")
+
+# ---------------------------------------------------
+
+	# Allow mods to remove language roles from the DB
+	@commands.command()
+	@commands.has_any_role('Admin', 'Owner')
+	async def deleterole(self, ctx, role_id):
+		delete = self.client.db.delete(table = "Roles", condition = f"RoleID = {int(role_id)}")
+		if delete == 1:
+			await ctx.send("Succesfully deleted role!")
+		else:
+			await ctx.send(f"Error:```{delete}```")
+
+# ---------------------------------------------------
+
 	@commands.Cog.listener()
 	async def on_message_edit(self, before, after):
 		if before.author.id != self.client.user.id:
