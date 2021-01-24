@@ -1,7 +1,8 @@
 # Discord Bot for the Connection Server
 
 ## Database
-The bot uses an SQLITE3 database to maintain records. As of now, it has three tables - Members, Modlogs and Reports. Of these 3 tables, you can only obtain data from the Members table. 
+The bot uses an SQLITE3 database to maintain records. As of now, it has three tables - Members, Modlogs and Reports.
+Of these 3 tables, you can only obtain data from the Members table. 
 
 The database for the client is defined as `client.db`. To insert, update, delete or fetch records, use code like this:
 ```py

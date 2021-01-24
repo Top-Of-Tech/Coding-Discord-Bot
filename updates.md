@@ -24,3 +24,6 @@
 1. Added createrole command to add language roles to the DB
 2. Added deleterole command to delete language roles from the DB
 3. Added getrole command to obtain language roles
+
+## Top-Of-Tech - 24/01/2021 - Formatted Files
+1. Formatted files to comply with PEP 8
