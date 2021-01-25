@@ -77,7 +77,7 @@ class Moderation(commands.Cog):
         member = await self.client.fetch_user(member_id)
 
         embedVar = discord.Embed(title=f"Modlogs of {member.name}", description=f"{len(logs)} Modlogs",
-                                 color=random_colour())
+                                 color=0x0000ff)
 
         for n, log in enumerate(logs):
             mod = await self.client.fetch_user(log[2])
@@ -126,7 +126,7 @@ class Moderation(commands.Cog):
             condition=f"Resolved = {resolved}"
         )[:size]
 
-        embedVar = discord.Embed(title="Reports", description=f"{len(logs)} Reports", color=random_colour())
+        embedVar = discord.Embed(title="Reports", description=f"{len(logs)} Reports", color=0x0000ff)
 
         for n, i in enumerate(logs):
             r = await self.client.fetch_user(i[1])
@@ -164,7 +164,7 @@ class Moderation(commands.Cog):
         report = self.client.db.insert(table="Roles", values=(role_id, role_name, role_key))
         if report == 1:
             embed = discord.Embed(title="New Language Role", description=f"{role_name} - {role_key}",
-                                  color=random_colour())
+                                  color=0x0000ff)
             embed.set_footer(text=f"Called by: {ctx.author.display_name}")
             embed.set_author(name=self.client.user.display_name)
             embed.set_thumbnail(url=ctx.guild.icon_url)
@@ -189,7 +189,7 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         if before.author.id != self.client.user.id:
-            embed = discord.Embed(title="Edited Message", description=before.channel.mention, color=random_colour())
+            embed = discord.Embed(title="Edited Message", description=before.channel.mention, color=0x0000ff)
             embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
             embed.add_field(name="After", value=f"```{after.content}```", inline=True)
             embed.add_field(name="Author", value=f"{before.author.mention}")
@@ -202,7 +202,7 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, before):
         if before.author.id != self.client.user.id:
-            embed = discord.Embed(title="Deleted Message", description=before.channel.mention, color=random_colour())
+            embed = discord.Embed(title="Deleted Message", description=before.channel.mention, color=0x0000ff)
             embed.add_field(name="Message", value=f"```{before.content}```", inline=True)
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
             embed.add_field(name="Info", value=text, inline=False)

@@ -27,3 +27,7 @@
 
 ## Top-Of-Tech - 24/01/2021 - Formatted Files
 1. Formatted files to comply with PEP 8
+
+## Top-Of-Tech - 25/01/2021 - Added User Cog
+1. Added user command to give general information about the user
+2. Added avatar command to give the user's avatar
