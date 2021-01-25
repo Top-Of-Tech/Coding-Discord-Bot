@@ -1,5 +1,5 @@
 # Discord-Bot
-The open-source discord bot for our community - Connection-Software
+The open-source discord bot for our community - Connection Software
 
 ## Contribution
 To start contributing, make sure you've joined our server, and our GitHub organisation! For ideas to contribute, take a look at `ideas.md`! Or if you already have an idea for the bot, go ahead with it!
