@@ -23,5 +23,5 @@ venv.bak/
 # PyCharm Project settings
 .idea/
 
-# Database
-.db
+# Sensitive info for bot
+bot_config.py

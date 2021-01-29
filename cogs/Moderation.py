@@ -10,16 +10,48 @@ class Moderation(commands.Cog):
 
     # ---------------------------------------------------
 
+    # Warn a User
+    @commands.command()
+    @commands.has_any_role('Admin', 'Owner')
+    async def warn(self, ctx, member, reason):
+
+        t = datetime.datetime.utcnow()
+        form = t.strftime("%H:%M-%d-%m-%y")
+
+        num_logs = len(self.client.db.select(table="Modlogs", columns="*", condition="ID >= 0"))
+        values = (num_logs + 1, member.id, ctx.author.id, reason, form)
+
+        output = self.client.db.insert(
+                table = "ModLogs",
+                values = values
+            )
+
+        try:
+            dm = await member.create_dm()
+            dm.send(f"You were warned in the {ctx.guild} server. Reason: {reason}")
+            await ctx.send(f"Warned {member.mention}")
+            return
+        except:
+            ctx.send(f"{member.mention}, you have been warned here.")
+            return
+
+        if output != 1:
+            await ctx.send(f"Could not warn {member.mention}!")
+            return
+        await ctx.send(f"Warned {member.mention}")
+
+    # ---------------------------------------------------
+
     # Ban a User
     @commands.command()
     @commands.has_any_role('Admin', 'Owner')
     async def ban(self, ctx, member: discord.Member, reason):
         try:
             await ctx.guild.ban(member, reason=reason)
-            await ctx.send(f"Successfully banned {member}")
+            await ctx.send(f"Successfully banned {member.mention}")
             print(f"Banned {member}")
         except Exception as e:
-            await ctx.send(f"Was not able to ban `{member}`")
+            await ctx.send(f"Was not able to ban `{member.mention}`")
             await ctx.send(f"Error:\n```{e}```")
 
     # ---------------------------------------------------
@@ -101,14 +133,17 @@ class Moderation(commands.Cog):
         n = len(self.client.db.select(table="Reports", columns="ID", condition="ID > 0"))
         t = datetime.datetime.utcnow()
         form = t.strftime("%H:%M-%d-%m-%y")
+        
         self.client.db.insert(table="Reports", values=(n + 1, ctx.author.id, member.id, reason, form, 0))
 
         embed = discord.Embed(title="New Report", description=f"From: {ctx.author.mention}\nAgainst: {member.mention}",
                               color=random_colour())
+
         embed.add_field(name="Reason", value=f"```{reason}```", inline=False)
         text = f"Time Reported: {ctx.message.created_at.strftime('%d-%m-%y at %H:%M')}\nID: {n + 1}"
         embed.add_field(name="Info", value=text, inline=False)
-        await self.client.logs_channel.send(embed=embed)
+        
+        await self.client.reports_channel.send(embed=embed)
         await ctx.message.delete()
         await ctx.send(f"Reported {member.mention} for {reason}.")
 
@@ -188,7 +223,7 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        if before.author.id != self.client.user.id:
+        if not before.author.bot:
             embed = discord.Embed(title="Edited Message", description=before.channel.mention, color=0x0000ff)
             embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
             embed.add_field(name="After", value=f"```{after.content}```", inline=True)

@@ -25,9 +25,9 @@ help_descriptions = \
         "getrole": "Get a role using its key.\nUsage:\n`.cs getrole (role key)`."
     },
     "User": {
-        "Description": "Commands: `.cs user`, `.cs avatar`",
-        "user": "Shows general information about the user",
-        "avatar": "Shows the user's avatar"
+        "Description": "Commands: `.cs userinfo`, `.cs avatar`",
+        "userinfo": "Shows general information about the user\nUsage:\n`.cs userinfo (user)`",
+        "avatar": "Shows the user's avatar.\nUsage:\n`.cs avatar <user>`"
     }
 }
 # Do NOT modify this:

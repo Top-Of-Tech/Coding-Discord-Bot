@@ -22,6 +22,19 @@ class Roles(commands.Cog):
         except Exception as e:
             await ctx.send(e)
 
+    @commands.command()
+    async def listroles(self, ctx):
+        role_list = self.client.db.select(
+            table="Roles",
+            columns="RoleID, RoleKey",
+            condition="RoleID > 0"
+        )
+        embed = discord.Embed(title="List of Language Roles", description="", colour=discord.Colour.orange())
+        for role_desc in role_list:
+            role_name = ctx.guild.get_role(int(role_desc[0])).name
+            embed.add_field(name=role_name, value=f"Key: {role_desc[1]}", inline=False)
+        await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(Roles(client))

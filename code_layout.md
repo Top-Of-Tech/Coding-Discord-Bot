@@ -1,8 +1,8 @@
 # Discord Bot for the Connection Server
 
 ## Database
-The bot uses an SQLITE3 database to maintain records. As of now, it has three tables - Members, Modlogs and Reports.
-Of these 3 tables, you can only obtain data from the Members table. 
+The bot uses an PostgreSQL database to maintain records. As of now, it has four tables - Members, Modlogs, Roles and Reports.
+Of these 3 tables, you can only obtain data from the Members and Roles tables. 
 
 The database for the client is defined as `client.db`. To insert, update, delete or fetch records, use code like this:
 ```py
@@ -25,4 +25,11 @@ Note that all commands must be in SQL syntax
 
 All commands for the client must be written in the form of cogs. Place all your cogs in the `./cogs` folder, and the bot will automatically load them.
 
-Prefix for bot commands is `.cs `. For ideas on contributions that you can make, look at `issues.md`!
+Prefix for bot commands is `.cs `. For ideas on contributions that you can make, look at `ideas.md`!
+
+## Files
+
+`bot.py` - File to run the bot
+`bot_config.py` - Contains sensitive info to run the bot, and is listed in the .gitignore file (You dont need to erase it everytime you push!)
+`bot_help.py` - Contains help for bot commands
+`database_config.py` - Contains SQL statements to create tables.
