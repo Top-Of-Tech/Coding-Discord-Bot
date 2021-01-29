@@ -1,26 +1,27 @@
 import discord
 from discord.ext import commands
-import os
-from sqlite3 import connect
-import sqlite3
+
+import psycopg2 as psg
+
 from bot_help import help_descriptions, complete_dict
+from bot_config import REPORTS_CHANNEL, LOGS_CHANNEL, TOKEN, USERNAME, HOST, PASSWORD, PORT, DATABASE_NAME
+from database_config import TABLES
+
 import random
-
-
-def get_token():
-    with open("token.txt", "r") as f:
-        stripped_token = f.read().strip()
-    return stripped_token
-
-
-token = get_token()
-DB_PATH =   # Path to DB
-LOGS_CHANNEL =   # Staff channel id as an integer
+import os
 
 
 class Database:
-    def __init__(self, db):
-        self.Database = connect(db)
+
+    def __init__(self, db, user, password, host, port):
+        self.Database = psg.connect(
+            database = db,
+            user = user,
+            password = password,
+            host = host,
+            port = port
+            )
+
         self.cursor = self.Database.cursor()
 
     def select(self, table, columns, condition, size=None, order_by=None):
@@ -38,7 +39,7 @@ class Database:
             self.cursor.execute(f"UPDATE {table} SET {command} WHERE {condition};")
             self.Database.commit()
             return 1
-        except sqlite3.Error as e:
+        except Exception as e:
             return e
 
     def insert(self, table, values: tuple):
@@ -46,7 +47,7 @@ class Database:
             self.cursor.execute(f"INSERT INTO {table} VALUES {values};")
             self.Database.commit()
             return 1
-        except sqlite3.Error as e:
+        except Exception as e:
             return e
 
     def delete(self, table, condition):
@@ -54,7 +55,15 @@ class Database:
             self.cursor.execute(f"DELETE FROM {table} WHERE {condition};")
             self.Database.commit()
             return 1
-        except sqlite3.Error as e:
+        except Exception as e:
+            return e
+
+    def insert_ignore(self, table, values):
+        try:
+            self.cursor.execute(f"INSERT IGNORE INTO {table} VALUES {values};")
+            self.Database.commit()
+            return 1
+        except Exception as e:
             return e
 
 
@@ -64,7 +73,13 @@ intents = discord.Intents.default()
 intents.messages = True
 intents.members = True
 client = commands.Bot(command_prefix=".cs ", intents=intents, help_command=None)
-client.db = Database(DB_PATH)
+client.db = Database(
+    db = DATABASE_NAME,
+    user = USERNAME,
+    password = PASSWORD,
+    host = HOST,
+    port = PORT
+    )
 
 # ---------------------------------------------------
 
@@ -85,6 +100,20 @@ def random_colour():
 async def on_ready():
     print("Ready!")
     client.logs_channel = await client.fetch_channel(LOGS_CHANNEL)
+    client.reports_channel = await client.fetch_channel(REPORTS_CHANNEL)
+
+    results = client.db.select(
+        table = "information_schema.tables", 
+        columns = "table_name",
+        condition = "table_schema = 'public';")
+    db_list = [i[0] for i in results]
+
+    for i in TABLES.keys():
+        print(i)
+        if i not in db_list:
+            client.db.cursor.execute(TABLES[i])
+            client.db.Database.commit()
+            print("Created table", i)
 
 
 # ---------------------------------------------------
@@ -160,8 +189,8 @@ async def help(ctx, command_help=None):
 
 
 @client.listen('on_message')
-async def process_msg(message):
-    if message.mention_everyone and ("EveryonePing" not in [a.name for a in message.author.roles]):
+async def on_msg(message):
+    if message.mention_everyone and not message.author.bot:
         channel = message.channel
         author = message.author
         await message.delete()
@@ -179,7 +208,7 @@ async def process_msg(message):
 # ---------------------------------------------------
 
 try:
-    client.run(token)
+    client.run(TOKEN)
 except Exception as e:
     print(e)
-    client.db.cursor.close()
+    client.db.Database.close()

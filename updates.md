@@ -31,3 +31,7 @@
 ## Top-Of-Tech - 25/01/2021 - Added User Cog
 1. Added user command to give general information about the user
 2. Added avatar command to give the user's avatar
+
+## class PythonAddict - 29/01/2021 - Migrated from SQLite
+1. Changed database to PostgreSQL
+2. Added files: `bot_config.py`, `bot_config_sample.py`
