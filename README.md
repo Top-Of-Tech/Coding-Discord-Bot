@@ -6,4 +6,4 @@ The open-source discord bot for our community - Connection Software
 2. Before contributing, make sure to read `code_layout.md`, `contribute.md` and `ideas.md`!
 
 ## Discord Server
-This is the link to our discord server: [](https://discord.gg/qyTg8J8cZ5)
+This is the link to our discord server: [https://discord.gg/qyTg8J8cZ5](https://discord.gg/qyTg8J8cZ5)
