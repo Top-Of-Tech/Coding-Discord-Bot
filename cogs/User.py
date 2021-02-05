@@ -10,7 +10,7 @@ class User(commands.Cog):
 
     # Gives info about the user
     @commands.command()
-    async def user(self, ctx, member: discord.Member):
+    async def userinfo(self, ctx, member: discord.Member):
         if member:
             author = member
         else:

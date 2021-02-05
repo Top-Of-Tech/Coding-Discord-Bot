@@ -35,3 +35,9 @@
 ## class PythonAddict - 29/01/2021 - Migrated from SQLite
 1. Changed database to PostgreSQL
 2. Added files: `bot_config.py`, `bot_config_sample.py`
+
+## class PythonAddict - 5/01/2021 - Removed Modlogs Table
+1. Removed the Modlogs table, from now on, we will be using Dyno's Modlog system
+2. Removed the warn command, we will be using Dyno's warning system
+3. Added a `requirements.txt` file
+4. Added a new idea in `ideas.md`
