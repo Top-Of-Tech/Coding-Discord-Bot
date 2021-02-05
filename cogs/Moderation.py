@@ -10,38 +10,6 @@ class Moderation(commands.Cog):
 
     # ---------------------------------------------------
 
-    # Warn a User
-    @commands.command()
-    @commands.has_any_role('Admin', 'Owner')
-    async def warn(self, ctx, member, reason):
-
-        t = datetime.datetime.utcnow()
-        form = t.strftime("%H:%M-%d-%m-%y")
-
-        num_logs = len(self.client.db.select(table="Modlogs", columns="*", condition="ID >= 0"))
-        values = (num_logs + 1, member.id, ctx.author.id, reason, form)
-
-        output = self.client.db.insert(
-                table = "ModLogs",
-                values = values
-            )
-
-        try:
-            dm = await member.create_dm()
-            dm.send(f"You were warned in the {ctx.guild} server. Reason: {reason}")
-            await ctx.send(f"Warned {member.mention}")
-            return
-        except:
-            ctx.send(f"{member.mention}, you have been warned here.")
-            return
-
-        if output != 1:
-            await ctx.send(f"Could not warn {member.mention}!")
-            return
-        await ctx.send(f"Warned {member.mention}")
-
-    # ---------------------------------------------------
-
     # Ban a User
     @commands.command()
     @commands.has_any_role('Admin', 'Owner')
@@ -92,36 +60,6 @@ class Moderation(commands.Cog):
         except Exception as e:
             await ctx.send(f"Was not able to kick `{member}`")
             await ctx.send(f"Error:\n```{e}```")
-
-    # ---------------------------------------------------
-
-    # List the Modlogs of a user
-    @commands.command(aliases=["ll"])
-    @commands.has_any_role('Admin', 'Owner')
-    async def listlogs(self, ctx, member_id):
-
-        logs = self.client.db.select(
-            table="ModLogs",
-            columns="ID, UserID, ModeratorID, Reason, Date",
-            condition=f"UserID = {member_id}"
-        )
-
-        member = await self.client.fetch_user(member_id)
-
-        embedVar = discord.Embed(title=f"Modlogs of {member.name}", description=f"{len(logs)} Modlogs",
-                                 color=0x0000ff)
-
-        for n, log in enumerate(logs):
-            mod = await self.client.fetch_user(log[2])
-            us = await self.client.fetch_user(log[1])
-            m = f"ID: {log[0]}\n"
-            m += f"User: {us.name}\n"
-            m += f"Moderator: {mod.name}\n"
-            m += f"Date: {log[4]}\n"
-
-            embedVar.add_field(name=f"{n + 1}. {log[3]}", value=m, inline=False)
-
-        await ctx.send(embed=embedVar)
 
     # ---------------------------------------------------
 
@@ -195,8 +133,10 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_any_role('Admin', 'Owner')
     async def createrole(self, ctx, role_id, role_key):
+
         role_name = ctx.guild.get_role(int(role_id)).name
         report = self.client.db.insert(table="Roles", values=(role_id, role_name, role_key))
+
         if report == 1:
             embed = discord.Embed(title="New Language Role", description=f"{role_name} - {role_key}",
                                   color=0x0000ff)
@@ -224,12 +164,16 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         if not before.author.bot:
+
             embed = discord.Embed(title="Edited Message", description=before.channel.mention, color=0x0000ff)
+            
             embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
             embed.add_field(name="After", value=f"```{after.content}```", inline=True)
             embed.add_field(name="Author", value=f"{before.author.mention}")
+
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nEdited at: {after.edited_at.strftime('%d-%m-%y at %H:%M')}\nMessage URL: {before.jump_url}\nMessage ID: {before.id}"
             embed.add_field(name="Info", value=text, inline=False)
+            
             await self.client.logs_channel.send(embed=embed)
 
     # ---------------------------------------------------

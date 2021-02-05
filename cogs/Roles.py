@@ -27,7 +27,7 @@ class Roles(commands.Cog):
         role_list = self.client.db.select(
             table="Roles",
             columns="RoleID, RoleKey",
-            condition="RoleID > 0"
+            condition="RoleID >= 0"
         )
         embed = discord.Embed(title="List of Language Roles", description="", colour=discord.Colour.orange())
         for role_desc in role_list:

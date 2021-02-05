@@ -121,7 +121,7 @@ async def on_ready():
 
 @client.listen()
 async def on_member_join(member):
-    print(member.name, client.db.insert(table="Members", values=(member.id, member.name, 0, 0)))
+    print(member.name, client.db.insert(table="Members", values=(member.id, member.name, 0)))
 
 
 # ---------------------------------------------------
