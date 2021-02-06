@@ -26,7 +26,7 @@ class Moderation(commands.Cog):
 
     # Purge Messages
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner')
+    @commands.has_any_role('Admin', 'Owner', 'Moderator')
     async def purge(self, ctx, limit=50, member: discord.Member = None):
         await ctx.message.delete()
         msg = []
@@ -52,7 +52,7 @@ class Moderation(commands.Cog):
 
     # Kick a user
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner')
+    @commands.has_any_role('Admin', 'Owner', 'Moderator')
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         try:
             await member.kick(reason=reason)
@@ -89,7 +89,7 @@ class Moderation(commands.Cog):
 
     # List reports
     @commands.command(aliases=["lr"])
-    @commands.has_any_role('Admin', 'Owner')
+    @commands.has_any_role('Admin', 'Owner', 'Moderator')
     async def listreports(self, ctx, resolved=0, size=5):
 
         logs = self.client.db.select(
@@ -116,7 +116,7 @@ class Moderation(commands.Cog):
 
     # Mark a report as resloved(1)
     @commands.command(aliases=["cr"])
-    @commands.has_any_role('Admin', 'Owner')
+    @commands.has_any_role('Admin', 'Owner', 'Moderator')
     async def closereport(self, ctx, report_id):
         report = self.client.db.update(
             table="Reports",
@@ -131,7 +131,7 @@ class Moderation(commands.Cog):
 
     # Allow mods to add language roles
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner')
+    @commands.has_any_role('Admin', 'Owner', 'Moderator')
     async def createrole(self, ctx, role_id, role_key):
 
         role_name = ctx.guild.get_role(int(role_id)).name
@@ -151,7 +151,7 @@ class Moderation(commands.Cog):
 
     # Allow mods to remove language roles from the DB
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner')
+    @commands.has_any_role('Admin', 'Owner', 'Moderator')
     async def deleterole(self, ctx, role_id):
         delete = self.client.db.delete(table="Roles", condition=f"RoleID = {int(role_id)}")
         if delete == 1:
@@ -183,6 +183,7 @@ class Moderation(commands.Cog):
         if before.author.id != self.client.user.id:
             embed = discord.Embed(title="Deleted Message", description=before.channel.mention, color=0x0000ff)
             embed.add_field(name="Message", value=f"```{before.content}```", inline=True)
+            embed.add_field(name="Author", value=f"{before.author.mention}")
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
             embed.add_field(name="Info", value=text, inline=False)
             await self.client.logs_channel.send(embed=embed)
