@@ -190,7 +190,9 @@ async def help(ctx, command_help=None):
 
 @client.listen('on_message')
 async def on_msg(message):
-    if message.mention_everyone and not message.author.bot:
+    role_list = [i.name for i in message.author.roles]
+    mentions_allowed = "Admin" in role_list or "Moderator" in role_list or "Owner" in role_list
+    if message.mention_everyone and not message.author.bot and not mentions_allowed:
         channel = message.channel
         author = message.author
         await message.delete()
