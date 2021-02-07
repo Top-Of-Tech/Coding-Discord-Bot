@@ -180,7 +180,7 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, before):
-        if before.author.id != self.client.user.id:
+        if before.author.id != self.client.user.id or before.author.bot:
             embed = discord.Embed(title="Deleted Message", description=before.channel.mention, color=0x0000ff)
             embed.add_field(name="Message", value=f"```{before.content}```", inline=True)
             embed.add_field(name="Author", value=f"{before.author.mention}")
