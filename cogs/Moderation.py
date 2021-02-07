@@ -165,7 +165,7 @@ class Moderation(commands.Cog):
     async def on_message_edit(self, before, after):
         if not before.author.bot:
 
-            embed = discord.Embed(title="Edited Message", description=before.channel.mention, color=0x0000ff)
+            embed = discord.Embed(title="Edited Message", description=before.channel.mention, color=0xff9f29)
             
             embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
             embed.add_field(name="After", value=f"```{after.content}```", inline=True)
@@ -180,8 +180,8 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, before):
-        if before.author.id != self.client.user.id:
-            embed = discord.Embed(title="Deleted Message", description=before.channel.mention, color=0x0000ff)
+        if before.author.id != self.client.user.id or before.author.bot:
+            embed = discord.Embed(title="Deleted Message", description=before.channel.mention, color=0xe32c29)
             embed.add_field(name="Message", value=f"```{before.content}```", inline=True)
             embed.add_field(name="Author", value=f"{before.author.mention}")
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
