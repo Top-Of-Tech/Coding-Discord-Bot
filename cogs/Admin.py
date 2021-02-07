@@ -12,7 +12,7 @@ class Admin(commands.Cog):
     @commands.has_any_role('Admin', 'Owner')
     async def loadMembers(self, ctx):
         async for member in ctx.guild.fetch_members(limit=None):
-            print(member.name, self.client.db.insert(table="Members", values=(member.id, member.name, 0, 0)))
+            print(member.name, self.client.db.insert_ignore(table="Members", values=(member.id, member.name, 0)))
 
 
 def setup(client):

@@ -7,7 +7,7 @@
 ## Intermediate
 
 1. Create commands for members to use, like commands to show the avatar of a user, show information about a user, etc.
-2. Write an error handler :)
+2. Write an error handler :) (I'll give you 10k pancakes if you do it for me :p)
 
 ## Advanced
 

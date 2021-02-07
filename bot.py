@@ -60,7 +60,7 @@ class Database:
 
     def insert_ignore(self, table, values):
         try:
-            self.cursor.execute(f"INSERT IGNORE INTO {table} VALUES {values};")
+            self.cursor.execute(f"INSERT INTO {table} VALUES {values} ON CONFLICT DO NOTHING;")
             self.Database.commit()
             return 1
         except Exception as e:
@@ -72,7 +72,7 @@ class Database:
 intents = discord.Intents.default()
 intents.messages = True
 intents.members = True
-client = commands.Bot(command_prefix=".cs ", intents=intents, help_command=None)
+client = commands.Bot(command_prefix=".cs ", intents=intents, help_command=None, case_insensitive=True)
 client.db = Database(
     db = DATABASE_NAME,
     user = USERNAME,
@@ -106,14 +106,17 @@ async def on_ready():
         table = "information_schema.tables", 
         columns = "table_name",
         condition = "table_schema = 'public';")
-    db_list = [i[0] for i in results]
+    db_list = [i[0].lower() for i in results]
+
 
     for i in TABLES.keys():
         print(i)
-        if i not in db_list:
-            client.db.cursor.execute(TABLES[i])
+        if i.lower() not in db_list:
+            res = client.db.cursor.execute(TABLES[i])
             client.db.Database.commit()
             print("Created table", i)
+
+    await client.change_presence(activity = discord.Game(name = "Use the prefix `.cs` | .cs help"))
 
 
 # ---------------------------------------------------
