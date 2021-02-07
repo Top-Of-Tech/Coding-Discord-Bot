@@ -41,3 +41,8 @@
 2. Removed the warn command, we will be using Dyno's warning system
 3. Added a `requirements.txt` file
 4. Added a new idea in `ideas.md`
+
+## class PythonAddict - 7/01/2021 - Fixed SQL Bugs
+1. Fixed a bug in the SQL statement
+2. Added Discord status message for the bot
+3. Made commands case insensitive
