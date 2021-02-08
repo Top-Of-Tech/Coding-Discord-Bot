@@ -16,13 +16,15 @@ class User(commands.Cog):
         else:
             author = ctx.message.author
 
-        embed = discord.Embed(title=f"{author}", color=0x0000ff)
+        embed = discord.Embed(title=f"{author}", color=0x0000FF)
 
-        embed.add_field(name="User Info",
-                        value=f"Joined On: `{str(author.joined_at).split()[0]}`"
-                              f"\nCreated On: `{str(author.created_at).split()[0]}`"
-                              f"\nUser ID: `{author.id}`",
-                        inline=False)
+        embed.add_field(
+            name="User Info",
+            value=f"Joined On: `{str(author.joined_at).split()[0]}`"
+            f"\nCreated On: `{str(author.created_at).split()[0]}`"
+            f"\nUser ID: `{author.id}`",
+            inline=False,
+        )
 
         await ctx.send(embed=embed)
 
@@ -36,7 +38,7 @@ class User(commands.Cog):
         else:
             author = ctx.message.author
 
-        embed = discord.Embed(title=f"{author}", color=0x0000ff)
+        embed = discord.Embed(title=f"{author}", color=0x0000FF)
 
         embed.set_image(url=author.avatar_url)
 

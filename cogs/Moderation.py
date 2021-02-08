@@ -12,7 +12,7 @@ class Moderation(commands.Cog):
 
     # Ban a User
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner')
+    @commands.has_any_role("Admin", "Owner")
     async def ban(self, ctx, member: discord.Member, reason):
         try:
             await ctx.guild.ban(member, reason=reason)
@@ -26,7 +26,7 @@ class Moderation(commands.Cog):
 
     # Purge Messages
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner', 'Moderator')
+    @commands.has_any_role("Admin", "Owner", "Moderator")
     async def purge(self, ctx, limit=50, member: discord.Member = None):
         await ctx.message.delete()
         msg = []
@@ -52,11 +52,11 @@ class Moderation(commands.Cog):
 
     # Kick a user
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner', 'Moderator')
+    @commands.has_any_role("Admin", "Owner", "Moderator")
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         try:
             await member.kick(reason=reason)
-            await ctx.send(f'User {member.mention} has kicked.')
+            await ctx.send(f"User {member.mention} has kicked.")
         except Exception as e:
             await ctx.send(f"Was not able to kick `{member}`")
             await ctx.send(f"Error:\n```{e}```")
@@ -68,19 +68,26 @@ class Moderation(commands.Cog):
     async def report(self, ctx, member: discord.Member, *reason):
         reason = " ".join(reason).strip()
 
-        n = len(self.client.db.select(table="Reports", columns="ID", condition="ID > 0"))
+        n = len(
+            self.client.db.select(table="Reports", columns="ID", condition="ID > 0")
+        )
         t = datetime.datetime.utcnow()
         form = t.strftime("%H:%M-%d-%m-%y")
-        
-        self.client.db.insert(table="Reports", values=(n + 1, ctx.author.id, member.id, reason, form, 0))
 
-        embed = discord.Embed(title="New Report", description=f"From: {ctx.author.mention}\nAgainst: {member.mention}",
-                              color=random_colour())
+        self.client.db.insert(
+            table="Reports", values=(n + 1, ctx.author.id, member.id, reason, form, 0)
+        )
+
+        embed = discord.Embed(
+            title="New Report",
+            description=f"From: {ctx.author.mention}\nAgainst: {member.mention}",
+            color=random_colour(),
+        )
 
         embed.add_field(name="Reason", value=f"```{reason}```", inline=False)
         text = f"Time Reported: {ctx.message.created_at.strftime('%d-%m-%y at %H:%M')}\nID: {n + 1}"
         embed.add_field(name="Info", value=text, inline=False)
-        
+
         await self.client.reports_channel.send(embed=embed)
         await ctx.message.delete()
         await ctx.send(f"Reported {member.mention} for {reason}.")
@@ -89,17 +96,19 @@ class Moderation(commands.Cog):
 
     # List reports
     @commands.command(aliases=["lr"])
-    @commands.has_any_role('Admin', 'Owner', 'Moderator')
+    @commands.has_any_role("Admin", "Owner", "Moderator")
     async def listreports(self, ctx, resolved=0, size=5):
 
         logs = self.client.db.select(
             table="Reports",
             columns="ID, ReporterID, UserID, Reason, Date",
             size=size,
-            condition=f"Resolved = {resolved}"
+            condition=f"Resolved = {resolved}",
         )[:size]
 
-        embedVar = discord.Embed(title="Reports", description=f"{len(logs)} Reports", color=0x0000ff)
+        embedVar = discord.Embed(
+            title="Reports", description=f"{len(logs)} Reports", color=0x0000FF
+        )
 
         for n, i in enumerate(logs):
             r = await self.client.fetch_user(i[1])
@@ -116,12 +125,11 @@ class Moderation(commands.Cog):
 
     # Mark a report as resloved(1)
     @commands.command(aliases=["cr"])
-    @commands.has_any_role('Admin', 'Owner', 'Moderator')
+    @commands.has_any_role("Admin", "Owner", "Moderator")
     async def closereport(self, ctx, report_id):
         report = self.client.db.update(
-            table="Reports",
-            command="Resolved = 1",
-            condition=f"ID = {int(report_id)}")
+            table="Reports", command="Resolved = 1", condition=f"ID = {int(report_id)}"
+        )
         if report == 1:
             await ctx.send(f"Closed report {report_id} successfully.")
         else:
@@ -131,15 +139,20 @@ class Moderation(commands.Cog):
 
     # Allow mods to add language roles
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner', 'Moderator')
+    @commands.has_any_role("Admin", "Owner", "Moderator")
     async def createrole(self, ctx, role_id, role_key):
 
         role_name = ctx.guild.get_role(int(role_id)).name
-        report = self.client.db.insert(table="Roles", values=(role_id, role_name, role_key))
+        report = self.client.db.insert(
+            table="Roles", values=(role_id, role_name, role_key)
+        )
 
         if report == 1:
-            embed = discord.Embed(title="New Language Role", description=f"{role_name} - {role_key}",
-                                  color=0x0000ff)
+            embed = discord.Embed(
+                title="New Language Role",
+                description=f"{role_name} - {role_key}",
+                color=0x0000FF,
+            )
             embed.set_footer(text=f"Called by: {ctx.author.display_name}")
             embed.set_author(name=self.client.user.display_name)
             embed.set_thumbnail(url=ctx.guild.icon_url)
@@ -151,9 +164,11 @@ class Moderation(commands.Cog):
 
     # Allow mods to remove language roles from the DB
     @commands.command()
-    @commands.has_any_role('Admin', 'Owner', 'Moderator')
+    @commands.has_any_role("Admin", "Owner", "Moderator")
     async def deleterole(self, ctx, role_id):
-        delete = self.client.db.delete(table="Roles", condition=f"RoleID = {int(role_id)}")
+        delete = self.client.db.delete(
+            table="Roles", condition=f"RoleID = {int(role_id)}"
+        )
         if delete == 1:
             await ctx.send("Succesfully deleted role!")
         else:
@@ -165,15 +180,19 @@ class Moderation(commands.Cog):
     async def on_message_edit(self, before, after):
         if not before.author.bot:
 
-            embed = discord.Embed(title="Edited Message", description=before.channel.mention, color=0xff9f29)
-            
+            embed = discord.Embed(
+                title="Edited Message",
+                description=before.channel.mention,
+                color=0xFF9F29,
+            )
+
             embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
             embed.add_field(name="After", value=f"```{after.content}```", inline=True)
             embed.add_field(name="Author", value=f"{before.author.mention}")
 
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nEdited at: {after.edited_at.strftime('%d-%m-%y at %H:%M')}\nMessage URL: {before.jump_url}\nMessage ID: {before.id}"
             embed.add_field(name="Info", value=text, inline=False)
-            
+
             await self.client.logs_channel.send(embed=embed)
 
     # ---------------------------------------------------
@@ -181,8 +200,14 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, before):
         if before.author.id != self.client.user.id or before.author.bot:
-            embed = discord.Embed(title="Deleted Message", description=before.channel.mention, color=0xe32c29)
-            embed.add_field(name="Message", value=f"```{before.content}```", inline=True)
+            embed = discord.Embed(
+                title="Deleted Message",
+                description=before.channel.mention,
+                color=0xE32C29,
+            )
+            embed.add_field(
+                name="Message", value=f"```{before.content}```", inline=True
+            )
             embed.add_field(name="Author", value=f"{before.author.mention}")
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
             embed.add_field(name="Info", value=text, inline=False)
@@ -190,7 +215,9 @@ class Moderation(commands.Cog):
 
 
 def random_colour():
-    return discord.Colour.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    return discord.Colour.from_rgb(
+        random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+    )
 
 
 def setup(client):
