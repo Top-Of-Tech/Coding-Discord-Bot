@@ -46,3 +46,7 @@
 1. Fixed a bug in the SQL statement
 2. Added Discord status message for the bot
 3. Made commands case insensitive
+
+## class PythonAddict - 8/01/2021 - Added rollbacks
+1. Added roll backs for sql statements
+2. Formatted files with black
