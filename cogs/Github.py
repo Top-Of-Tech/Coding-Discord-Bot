@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from github import Github
+from github import Github as gh
 
 class Github(commands.Cog):
     def __init__(self, client):
@@ -11,7 +11,7 @@ class Github(commands.Cog):
     # Fetches specified Github repository
     @commands.command(aliases=["gh"])
     async def github(self, ctx, repo):
-        repo_object = list(Github().search_repositories(repo))[0]
+        repo_object = list(gh().search_repositories(repo))[0]
 
         embed=discord.Embed(title=f"{repo_object.full_name}", color=0x0000ff)
         embed.add_field(name="Stars", value=f"{repo_object.stargazers_count}", inline=True)
