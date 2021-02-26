@@ -194,7 +194,7 @@ async def reload(ctx, *extension):
 async def help(ctx, command_help=None):
     if command_help is None:
         embed = discord.Embed(
-            title="Help", description="Help for categories", color=random_colour()
+            title="Help", description="Help for categories", color=0x0066ff
         )
 
         for num, key in enumerate(help_descriptions.keys()):

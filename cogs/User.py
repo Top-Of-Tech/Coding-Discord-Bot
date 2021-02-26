@@ -16,7 +16,7 @@ class User(commands.Cog):
         else:
             author = ctx.message.author
 
-        embed = discord.Embed(title=f"{author}", color=0x0000FF)
+        embed = discord.Embed(title=f"{author}", color=0x0066ff)
 
         embed.add_field(
             name="User Info",
@@ -38,7 +38,7 @@ class User(commands.Cog):
         else:
             author = ctx.message.author
 
-        embed = discord.Embed(title=f"{author}", color=0x0000FF)
+        embed = discord.Embed(title=f"{author}", color=0x0066ff)
 
         embed.set_image(url=author.avatar_url)
 

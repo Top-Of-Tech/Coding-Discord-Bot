@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from github import Github as gh
+import requests
 
 class Github(commands.Cog):
     def __init__(self, client):
@@ -11,16 +11,23 @@ class Github(commands.Cog):
     # Fetches specified Github repository
     @commands.command(aliases=["gh"])
     async def github(self, ctx, repo):
-        repo_object = list(gh().search_repositories(repo))[0]
+        repo_object = requests.get(f"https://api.github.com/repos/{repo}")
 
-        embed=discord.Embed(title=f"{repo_object.full_name}", color=0x0000ff)
-        embed.add_field(name="Stars", value=f"{repo_object.stargazers_count}", inline=True)
-        embed.add_field(name="Forks", value=f"{repo_object.forks}", inline=True)
-        embed.add_field(name="Watchers", value=f"{repo_object.watchers}", inline=True)
-        embed.add_field(name="Issues", value=f"{len(repo_object.get_issues(state='open'))}", inline=True)
-        embed.add_field(name="Language", value=f"{repo_object.language}", inline=True)
-        embed.add_field(name="Description", value=f"{repo_object.description}", inline=True)
+        embed=discord.Embed(title=f"{repo_object['full_name']}", color=0x0066ff)
+        embed.add_field(name="Stars", value=f"{repo_object['stargazers_count']}", inline=True)
+        embed.add_field(name="Forks", value=f"{repo_object['forks']}", inline=True)
+        embed.add_field(name="Watchers", value=f"{repo_object['watchers_count']}", inline=True)
+        embed.add_field(name="Issues", value=f"{repo_object['open_issues']}", inline=True)
+        embed.add_field(name="Language", value=f"{repo_object['language']}", inline=True)
+        embed.add_field(name="Description", value=f"{repo_object['description']}", inline=True)
         await ctx.send(embed=embed)
+
+    # ---------------------------------------------------
+
+    # Gives you the organization link
+    @commands.command(aliases=["org"])
+    async def organization(self, ctx):
+        await ctx.send("https://github.com/Connection-Software")
 
 
 def setup(client):
