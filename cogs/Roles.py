@@ -8,6 +8,7 @@ class Roles(commands.Cog):
 
     # ---------------------------------------------------
 
+    # Gives you the coding role you requested
     @commands.command()
     async def getrole(self, ctx, role_key):
         roles = self.client.db.select(
