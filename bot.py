@@ -239,6 +239,7 @@ async def help(ctx, command_help=None):
 
 @client.listen("on_message")
 async def on_msg(message):
+    print(message.guild)
     role_list = [i.name for i in message.author.roles]
     mentions_allowed = (
         "Admin" in role_list or "Moderator" in role_list or "Owner" in role_list
