@@ -9,7 +9,7 @@
 
 4. In your testing server, create two roles - `Admin` and `Owner`
 
-5. If you want, you can create a few records in each table. Use the command `.cs loadMembers` to add all the members in the server. Use the commands `.cs createrole`, and `.cs report` to create roles, reports and warns.
+5. If you want, you can create a few records in each table. Use the command `.cs loadMembers` to add all the members in the server. Use the command `.cs createrole` to create roles.
 
 6. Congratulations! The setup is now done! You can move on to `Code Layout`!
 
@@ -24,6 +24,4 @@
 	* If you added new commands, write a help command in `bot_help.py`
 	* If you created a new table, be sure to specify the SQL syntax in `database_config.py`!
 
-3. Please remember that whatever commands you write, you **may** not access data from the tables `Reports`
-
-4. Writing malicious code, or anything of the like will result in a ban.
+3. Writing malicious code, or anything of the like will result in a ban.
