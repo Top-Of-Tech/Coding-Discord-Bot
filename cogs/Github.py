@@ -11,7 +11,7 @@ class Github(commands.Cog):
     # Fetches specified Github repository
     @commands.command(aliases=["gh"])
     async def github(self, ctx, repo):
-        repo_object = requests.get(f"https://api.github.com/repos/{repo}")
+        repo_object = dict(requests.get(f"https://api.github.com/repos/{repo}"))
 
         embed=discord.Embed(title=f"{repo_object['full_name']}", color=0x0066ff)
         embed.add_field(name="Stars", value=f"{repo_object['stargazers_count']}", inline=True)
