@@ -183,7 +183,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 title="Edited Message",
                 description=before.channel.mention,
-                color=0xFF9F29,
+                color=0x0066ff,
             )
 
             embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
@@ -203,7 +203,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 title="Deleted Message",
                 description=before.channel.mention,
-                color=0xE32C29,
+                color=0x0066ff,
             )
             embed.add_field(
                 name="Message", value=f"```{before.content}```", inline=True

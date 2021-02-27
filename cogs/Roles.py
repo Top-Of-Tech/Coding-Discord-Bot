@@ -29,7 +29,7 @@ class Roles(commands.Cog):
         embed = discord.Embed(
             title="List of Language Roles",
             description="",
-            colour=discord.Colour.orange(),
+            color=0x0066ff,
         )
         for role_desc in role_list:
             role_name = ctx.guild.get_role(int(role_desc[0])).name
