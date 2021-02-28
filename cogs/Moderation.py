@@ -15,8 +15,8 @@ class Moderation(commands.Cog):
     # Ban a User
     @commands.command()
     @commands.has_any_role("Admin", "Owner")
-    async def ban(self, ctx, member: discord.Member, reason):
-        """Ban a user.\nUsage: `.cs ban (user)`\nOnly Admins and Owners can use this!"""
+    async def ban(self, ctx, member: discord.Member, *, reason=None):
+        """Ban a user.\nUsage: `.cs ban (user) <reason>`\nOnly Admins and Owners can use this!"""
 
         try:
             await ctx.guild.ban(member, reason=reason)
@@ -59,7 +59,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_any_role("Admin", "Owner", "Moderator")
     async def kick(self, ctx, member: discord.Member, *, reason=None):
-        """Kick a user.\nUsage: `.cs kick (member) (reason)`"""
+        """Kick a user.\nUsage: `.cs kick (member) <reason>`"""
 
         try:
             await member.kick(reason=reason)
@@ -67,7 +67,7 @@ class Moderation(commands.Cog):
         except Exception as e:
             await ctx.send(f"Was not able to kick `{member}`")
             await ctx.send(f"Error:\n```{e}```")
-            
+
     # ---------------------------------------------------
 
     @commands.Cog.listener()
@@ -77,7 +77,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 title="Edited Message",
                 description=before.channel.mention,
-                color=0xFF9F29,
+                color=0x0066FF,
             )
 
             embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
@@ -97,7 +97,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 title="Deleted Message",
                 description=before.channel.mention,
-                color=0xE32C29,
+                color=0x0066FF,
             )
             embed.add_field(
                 name="Message", value=f"```{before.content}```", inline=True

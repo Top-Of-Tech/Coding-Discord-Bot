@@ -13,13 +13,13 @@ class User(commands.Cog):
     # Gives info about the user
     @commands.command()
     async def userinfo(self, ctx, member: discord.Member):
-        """Shows general information about the user\nUsage:\n`.cs userinfo (user)`"""
+        """Shows general information about the user\nUsage: `.cs userinfo (user)`"""
         if member:
             author = member
         else:
             author = ctx.message.author
 
-        embed = discord.Embed(title=f"{author}", color=0x0000FF)
+        embed = discord.Embed(title=f"{author}", color=0x0066FF)
 
         embed.add_field(
             name="User Info",
@@ -36,14 +36,14 @@ class User(commands.Cog):
     # Shows a picture of the user's avatar
     @commands.command(aliases=["av"])
     async def avatar(self, ctx, member: discord.Member = None):
-        """"Shows the user's avatar.\nUsage:\n`.cs avatar <user>`"""
+        """Shows the user's avatar.\nUsage: `.cs avatar <user>`"""
 
         if member:
             author = member
         else:
             author = ctx.message.author
 
-        embed = discord.Embed(title=f"{author}", color=0x0000FF)
+        embed = discord.Embed(title=f"{author}", color=0x0066FF)
 
         embed.set_image(url=author.avatar_url)
 

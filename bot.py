@@ -130,9 +130,9 @@ async def on_ready():
             client.db.Database.commit()
             print("Created table", i)
 
-    #await client.change_presence(
-    #    activity=discord.Game(name="Use the prefix `.cs` | .cs help")
-    #)
+    await client.change_presence(
+        activity=discord.Game(name="Use the prefix `.cs` | .cs help")
+    )
 
 
 # ---------------------------------------------------
@@ -168,7 +168,7 @@ async def on_user_update(before, after):
 @commands.has_any_role("Owner", "Admin")
 async def reload(ctx, *extension):
     """Reload a particular extension.\nUsage: `.cs reload (extension)`\nOnly Admins and Owners can use this!"""
-    
+
     failed = []
     passed = []
     for i in extension:
@@ -190,22 +190,50 @@ async def reload(ctx, *extension):
 async def help(ctx, command_help=None):
     """Get help for a command or category.\nUsage: `.cs help <command> <category>`"""
 
-    embed = discord.Embed(title="Help", description=f"Help for {command_help or 'Connection Server Bot'}")
+    embed = discord.Embed(
+        title="Help", description=f"Help for {command_help or 'Connection Server Bot'}"
+    )
 
     embed.set_footer(text=f"Called by {ctx.author.display_name}.")
     embed.set_author(name=client.user.display_name)
     embed.set_thumbnail(url=client.user.avatar_url)
 
+    cogs = client.cogs
+
     if command_help is None:
-        for i in client.cogs.keys():
-            embed.add_field()
-        return 0
+
+        for i in cogs.keys():
+            embed.add_field(name=i + " cog", value=cogs[i].__doc__, inline=False)
+        return await ctx.send(embed=embed)
 
     cmds = [*client.commands]
     for i in cmds:
-        if i.callback.__name__.lower() == command_help.lower(): print(i.callback.__doc__)
+        if i.callback.__name__.lower() == command_help.lower():
+
+            embed.add_field(
+                name=".cs " + i.callback.__name__,
+                value=i.callback.__doc__,
+                inline=False,
+            )
+
+            return await ctx.send(embed=embed)
+
+    for i in cogs.keys():
+        if i.lower() == command_help.lower():
+
+            embed.add_field(name=i + " cog", value=cogs[i].__doc__, inline=False)
+
+            commands = cogs[i].get_commands()
+
+            for cmd in commands:
+                embed.add_field(
+                    name=".cs " + cmd.callback.__name__,
+                    value=cmd.callback.__doc__,
+                    inline=False,
+                )
 
     await ctx.send(embed=embed)
+
 
 # ---------------------------------------------------
 

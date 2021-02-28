@@ -10,9 +10,10 @@ class Roles(commands.Cog):
 
     # ---------------------------------------------------
 
+    # Gives you the coding role you requested
     @commands.command()
     async def getrole(self, ctx, role_key):
-        """Get a role using its key.\nUsage:\n`.cs getrole (role key)`"""
+        """Get a role using its key.\nUsage: `.cs getrole (role key)`"""
 
         roles = self.client.db.select(
             table="Roles", columns="RoleID", condition=f"RoleKey = '{role_key}'"
@@ -29,7 +30,7 @@ class Roles(commands.Cog):
 
     @commands.command()
     async def listroles(self, ctx):
-        """List all the gettable roles.\nUsage:\n`.cs listroles`"""
+        """List all the gettable roles.\nUsage: `.cs listroles`"""
 
         role_list = self.client.db.select(
             table="Roles", columns="RoleID, RoleKey", condition="RoleID >= 0"
@@ -37,12 +38,12 @@ class Roles(commands.Cog):
         embed = discord.Embed(
             title="List of Language Roles",
             description="",
-            colour=discord.Colour.orange(),
+            color=0x0066FF,
         )
         for role_desc in role_list:
             role_name = ctx.guild.get_role(int(role_desc[0])).name
             embed.add_field(name=role_name, value=f"Key: {role_desc[1]}", inline=False)
-        
+
         await ctx.send(embed=embed)
 
     # ---------------------------------------------------
@@ -51,7 +52,7 @@ class Roles(commands.Cog):
     @commands.command()
     @commands.has_any_role("Admin", "Owner", "Moderator")
     async def createrole(self, ctx, role_id, role_key):
-        """Remove a language role from the database/\nUsage\n`.cs deleterole (role id)\nCan only be used by Admins and Owners!"""
+        """Remove a language role from the database.\nUsage `.cs deleterole (role id)\nCan only be used by Admins and Owners!"""
 
         role_name = ctx.guild.get_role(int(role_id)).name
         result = self.client.db.insert(
@@ -77,7 +78,7 @@ class Roles(commands.Cog):
     @commands.command()
     @commands.has_any_role("Admin", "Owner", "Moderator")
     async def deleterole(self, ctx, role_id):
-        """Add a language role to the database, with a unique key for members to use.\nUsage:\n`.cs createrole (role id) (role key)`\nCan only be used by Admins and Owners!"""
+        """Add a language role to the database, with a unique key for members to use.\nUsage: `.cs createrole (role id) (role key)`\nCan only be used by Admins and Owners!"""
 
         delete = self.client.db.delete(
             table="Roles", condition=f"RoleID = {int(role_id)}"
