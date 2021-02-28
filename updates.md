@@ -36,17 +36,22 @@
 1. Changed database to PostgreSQL
 2. Added files: `bot_config.py`, `bot_config_sample.py`
 
-## class PythonAddict - 5/01/2021 - Removed Modlogs Table
+## class PythonAddict - 5/02/2021 - Removed Modlogs Table
 1. Removed the Modlogs table, from now on, we will be using Dyno's Modlog system
 2. Removed the warn command, we will be using Dyno's warning system
 3. Added a `requirements.txt` file
 4. Added a new idea in `ideas.md`
 
-## class PythonAddict - 7/01/2021 - Fixed SQL Bugs
+## class PythonAddict - 7/02/2021 - Fixed SQL Bugs
 1. Fixed a bug in the SQL statement
 2. Added Discord status message for the bot
 3. Made commands case insensitive
 
-## class PythonAddict - 8/01/2021 - Added rollbacks
+## class PythonAddict - 8/02/2021 - Added rollbacks
 1. Added roll backs for sql statements
 2. Formatted files with black
+
+## class PythonAddict - 28/02/2021 - Modified help commands
+1. Modified help commands to use docstrings
+2. Formatted files with black
+3. Moved createrole and deleterole to the Roles cog.

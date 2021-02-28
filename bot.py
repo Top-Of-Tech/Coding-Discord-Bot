@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
-
 import psycopg2 as psg
+import random
+import os
 
-from bot_help import help_descriptions, complete_dict
 from bot_config import (
     REPORTS_CHANNEL,
     LOGS_CHANNEL,
@@ -15,9 +15,6 @@ from bot_config import (
     DATABASE_NAME,
 )
 from database_config import TABLES
-
-import random
-import os
 
 
 class Database:
@@ -89,9 +86,7 @@ class Database:
 
 # ---------------------------------------------------
 
-intents = discord.Intents.default()
-intents.messages = True
-intents.members = True
+intents = discord.Intents.all()
 client = commands.Bot(
     command_prefix=".cs ", intents=intents, help_command=None, case_insensitive=True
 )
@@ -130,7 +125,6 @@ async def on_ready():
     db_list = [i[0].lower() for i in results]
 
     for i in TABLES.keys():
-        print(i)
         if i.lower() not in db_list:
             res = client.db.cursor.execute(TABLES[i])
             client.db.Database.commit()
@@ -173,6 +167,8 @@ async def on_user_update(before, after):
 @client.command()
 @commands.has_any_role("Owner", "Admin")
 async def reload(ctx, *extension):
+    """Reload a particular extension.\nUsage: `.cs reload (extension)`\nOnly Admins and Owners can use this!"""
+
     failed = []
     passed = []
     for i in extension:
@@ -192,44 +188,49 @@ async def reload(ctx, *extension):
 
 @client.command()
 async def help(ctx, command_help=None):
-    if command_help is None:
-        embed = discord.Embed(
-            title="Help", description="Help for categories", color=0x0066ff
-        )
+    """Get help for a command or category.\nUsage: `.cs help <command> <category>`"""
 
-        for num, key in enumerate(help_descriptions.keys()):
-            embed.add_field(
-                name=key, value=help_descriptions[key]["Description"], inline=False
-            )
-
-    else:
-        command_help = command_help.lower().strip()
-        embed = discord.Embed(
-            title=f"Help: {command_help.capitalize()}",
-            description="",
-            colour=random_colour(),
-        )
-
-        if command_help.capitalize() in help_descriptions.keys():
-            h = help_descriptions[command_help.capitalize()]
-            for key in help_descriptions[command_help.capitalize()].keys():
-                embed.add_field(name=key, value=h[key], inline=False)
-
-        elif command_help in complete_dict.keys():
-            embed.add_field(
-                name=f".cs {command_help}",
-                value=complete_dict[command_help],
-                inline=False,
-            )
-
-        else:
-            embed.add_field(
-                name="Not Found", value="Command/Category not found!", inline=False
-            )
+    embed = discord.Embed(
+        title="Help", description=f"Help for {command_help or 'Connection Server Bot'}"
+    )
 
     embed.set_footer(text=f"Called by {ctx.author.display_name}.")
     embed.set_author(name=client.user.display_name)
     embed.set_thumbnail(url=client.user.avatar_url)
+
+    cogs = client.cogs
+
+    if command_help is None:
+
+        for i in cogs.keys():
+            embed.add_field(name=i + " cog", value=cogs[i].__doc__, inline=False)
+        return await ctx.send(embed=embed)
+
+    cmds = [*client.commands]
+    for i in cmds:
+        if i.callback.__name__.lower() == command_help.lower():
+
+            embed.add_field(
+                name=".cs " + i.callback.__name__,
+                value=i.callback.__doc__,
+                inline=False,
+            )
+
+            return await ctx.send(embed=embed)
+
+    for i in cogs.keys():
+        if i.lower() == command_help.lower():
+
+            embed.add_field(name=i + " cog", value=cogs[i].__doc__, inline=False)
+
+            commands = cogs[i].get_commands()
+
+            for cmd in commands:
+                embed.add_field(
+                    name=".cs " + cmd.callback.__name__,
+                    value=cmd.callback.__doc__,
+                    inline=False,
+                )
 
     await ctx.send(embed=embed)
 
@@ -239,8 +240,7 @@ async def help(ctx, command_help=None):
 
 @client.listen("on_message")
 async def on_msg(message):
-    try: role_list = [i.name for i in message.author.roles]
-    except: return -1
+    role_list = [i.name for i in message.author.roles]
     mentions_allowed = (
         "Admin" in role_list or "Moderator" in role_list or "Owner" in role_list
     )
