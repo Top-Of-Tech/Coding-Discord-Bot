@@ -3,6 +3,8 @@ from discord.ext import commands
 
 
 class User(commands.Cog):
+    """Commands related to users. Use `.cs help user` to know more!"""
+
     def __init__(self, client):
         self.client = client
 
@@ -11,6 +13,7 @@ class User(commands.Cog):
     # Gives info about the user
     @commands.command()
     async def userinfo(self, ctx, member: discord.Member):
+        """Shows general information about the user\nUsage:\n`.cs userinfo (user)`"""
         if member:
             author = member
         else:
@@ -33,6 +36,8 @@ class User(commands.Cog):
     # Shows a picture of the user's avatar
     @commands.command(aliases=["av"])
     async def avatar(self, ctx, member: discord.Member = None):
+        """"Shows the user's avatar.\nUsage:\n`.cs avatar <user>`"""
+
         if member:
             author = member
         else:
