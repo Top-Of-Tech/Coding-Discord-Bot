@@ -11,7 +11,7 @@
 
 5. If you want, you can create a few records in each table. Use the command `.cs loadMembers` to add all the members in the server. Use the command `.cs createrole` to create roles.
 
-6. Congratulations! The setup is now done! You can move on to [code_layout.md](.\code_layout.md)!
+6. Congratulations! The setup is now done! You can move on to [code_layout.md](./code_layout.md)!
 
 ## Guidelines for Contributing
 1. When you write code in this repository, please avoid:
