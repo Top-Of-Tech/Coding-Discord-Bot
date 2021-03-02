@@ -57,7 +57,7 @@ class Github(commands.Cog):
             embed.add_field(name="Location", value=str(user_object['location']), inline=True)
         if user_object['twitter_username'] != None:
             embed.add_field(name="Twitter Username", value=str(user_object['location']), inline=True)
-        if user_object['bio'] != None or user_object['blog'] != "":
+        if user_object['bio'] != None or user_object['bio'] != "":
             embed.add_field(name="Bio", value=str(user_object['bio']), inline=True)
         
         embed.add_field(name="Repos", value=str(user_object['public_repos']), inline=True)
