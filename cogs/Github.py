@@ -35,6 +35,63 @@ class Github(commands.Cog):
         embed.add_field(
             name="Description", value=f"{repo_object['description']}", inline=True
         )
+
+    # ---------------------------------------------------
+
+    # Fetches specified Github user
+    @commands.command(aliases=["ghu", "ghuser", "githubuser"])
+    async def github_user(self, ctx, *, user):
+        user_object = requests.get(f"https://api.github.com/users/{user}").json()
+
+        embed = discord.Embed(title=user, url=user_object['url'], color=0x0066ff)
+
+        if user_object['name'] != None:
+            embed.add_field(name="Name", value=user_object['name'], inline=True)
+        if user_object['company'] != None:
+            embed.add_field(name="Company", value=user_object['company'], inline=True)
+        if user_object['blog'] != None:
+            embed.add_field(name="Blog", value=user_object['blog'], inline=True)
+        if user_object['location'] != None:
+            embed.add_field(name="Location", value=user_object['location'], inline=True)
+        if user_object['twitter_username'] != None:
+            embed.add_field(name="Twitter Username", value=user_object['location'], inline=True)
+        if user_object['bio'] != None:
+            embed.add_field(name="Bio", value=user_object['bio'], inline=True)
+        
+        embed.add_field(name="Repos", value=user_object['public_repos'], inline=True)
+        embed.add_field(name="Gists", value=user_object['public_gists'], inline=True)
+        embed.add_field(name="Followers", value=user_object['followers'], inline=True)
+        embed.add_field(name="Following", value=user_object['following'], inline=True)
+        embed.add_field(name="Created At", value=user_object['created_at'].split('T')[0], inline=True)
+        embed.set_thumbnail(user_object['avatar_url'])
+
+        await ctx.send(embed=embed)
+
+    # ---------------------------------------------------
+
+    # Fetches specified Gitub organization
+    @commands.command(aliases=["ghorg", "githuborg"])
+    async def github_organization(self, ctx, org):
+        org_object = requests.get(f"https://api.github.com/orgs/{org}")
+
+        embed = discord.Embed(title=org, url=org_object['url'], color=0x0066ff)
+        
+        embed.add_field(name="Name", value=org_object['name'], inline=True)
+
+        if org_object['company'] != None:
+            embed.add_field(name="Company", value=org_object['company'], inline=True)
+        if org_object['blog'] != None:
+            embed.add_field(name="Blog", value=org_object['blog'], inline=True)
+        if org_object['location'] != None:
+            embed.add_field(name="Location", value=org_object['location'], inline=True)
+        if org_object['twitter_username'] != None:
+            embed.add_field(name="Twitter Username", value=org_object['location'], inline=True)
+
+        embed.add_field(name="Repos", value=org_object['public_repos'], inline=True)
+        embed.add_field(name="Gists", value=org_object['public_gists'], inline=True)
+        embed.add_field(name="Created At", value=org_object['created_at'].split('T')[0], inline=True)
+        embed.set_thumbnail(org_object['avatar_url'])
+
         await ctx.send(embed=embed)
 
     # ---------------------------------------------------

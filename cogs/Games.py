@@ -20,7 +20,6 @@ class Games(commands.Cog):
         embed = discord.Embed(
             title=f"The dice rolled {random.randint(1, 6)}", color=0x1479D2
         )
-        await ctx.send(embed=embed)
 
 
 def setup(client):

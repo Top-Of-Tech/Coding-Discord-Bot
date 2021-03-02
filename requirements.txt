@@ -8,10 +8,10 @@ discord.py==1.6.0
 idna==2.10
 multidict==5.1.0
 psycopg2-binary==2.8.6
-PyGithub==1.54.1
 PyJWT==1.7.1
 requests==2.25.1
 typing-extensions==3.7.4.3
 urllib3==1.26.3
 wrapt==1.12.1
 yarl==1.6.3
+PyDictionary==2.0.1
