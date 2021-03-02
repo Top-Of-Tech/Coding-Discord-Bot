@@ -50,21 +50,21 @@ class Github(commands.Cog):
         if user_object['name'] != None:
             embed.add_field(name="Name", value=str(user_object['name']), inline=True)
         if user_object['company'] != None:
-            embed.add_field(name="Company", value=str(user_object['company']) + ".", inline=True)
-        if user_object['blog'] != None or user_object['blog'] != "":
+            embed.add_field(name="Company", value=str(user_object['company']), inline=True)
+        if user_object['blog'] != None or user_object['blog'].strip() != "":
             embed.add_field(name="Blog", value=str(user_object['blog']) + ".", inline=True)
         if user_object['location'] != None:
-            embed.add_field(name="Location", value=str(user_object['location']) + ".", inline=True)
+            embed.add_field(name="Location", value=str(user_object['location']), inline=True)
         if user_object['twitter_username'] != None:
-            embed.add_field(name="Twitter Username", value=str(user_object['twitter_username']) + ".", inline=True)
+            embed.add_field(name="Twitter Username", value=str(user_object['twitter_username']), inline=True)
         if user_object['bio'] != None or user_object['bio'] != "":
-            embed.add_field(name="Bio", value=str(user_object['bio']) + ".", inline=True)
+            embed.add_field(name="Bio", value=str(user_object['bio']), inline=True)
         
         embed.add_field(name="Repos", value=str(user_object['public_repos']), inline=True)
         embed.add_field(name="Gists", value=str(user_object['public_gists']), inline=True)
         embed.add_field(name="Followers", value=str(user_object['followers']), inline=True)
         embed.add_field(name="Following", value=str(user_object['following']), inline=True)
-        embed.add_field(name="Created At", value=str(user_object['created_at'].split('T')[0]) + " .", inline=True)
+        embed.add_field(name="Created At", value=str(user_object['created_at'].split('T')[0]), inline=True)
         embed.set_thumbnail(url=user_object['avatar_url'])
 
         await ctx.send(embed=embed)
