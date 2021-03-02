@@ -51,7 +51,7 @@ class Github(commands.Cog):
             embed.add_field(name="Name", value=str(user_object['name']), inline=True)
         if user_object['company'] != None:
             embed.add_field(name="Company", value=str(user_object['company']), inline=True)
-        if user_object['blog'] != None:
+        if user_object['blog'] != None or user_object['blog'] == "":
             embed.add_field(name="Blog", value=str(user_object['blog']), inline=True)
         if user_object['location'] != None:
             embed.add_field(name="Location", value=str(user_object['location']), inline=True)

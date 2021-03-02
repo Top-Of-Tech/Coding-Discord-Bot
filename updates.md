@@ -51,7 +51,14 @@
 1. Added roll backs for sql statements
 2. Formatted files with black
 
+## Top-Of-Tech - 25/02/2021 - Added Github cog
+1. Added command to fetch github repo
+
 ## class PythonAddict - 28/02/2021 - Modified help commands
 1. Modified help commands to use docstrings
 2. Formatted files with black
 3. Moved createrole and deleterole to the Roles cog.
+
+## Top-Of-Tech 02/03/2021 - Added more Github commands
+1. Added Github User command
+2. Added Github Organization command
