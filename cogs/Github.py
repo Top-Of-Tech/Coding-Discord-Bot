@@ -60,11 +60,11 @@ class Github(commands.Cog):
         if user_object['bio'] != None:
             embed.add_field(name="Bio", value=str(user_object['bio']) + " .", inline=True)
         
-        embed.add_field(name="Repos", value=user_object['public_repos'] + " .", inline=True)
-        embed.add_field(name="Gists", value=user_object['public_gists'] + " .", inline=True)
-        embed.add_field(name="Followers", value=user_object['followers'] + " .", inline=True)
-        embed.add_field(name="Following", value=user_object['following'] + " .", inline=True)
-        embed.add_field(name="Created At", value=user_object['created_at'].split('T')[0] + " .", inline=True)
+        embed.add_field(name="Repos", value=str(user_object['public_repos']) + " .", inline=True)
+        embed.add_field(name="Gists", value=str(user_object['public_gists']) + " .", inline=True)
+        embed.add_field(name="Followers", value=str(user_object['followers']) + " .", inline=True)
+        embed.add_field(name="Following", value=str(user_object['following']) + " .", inline=True)
+        embed.add_field(name="Created At", value=str(user_object['created_at'].split('T')[0]) + " .", inline=True)
         embed.set_thumbnail(url=user_object['avatar_url'])
 
         await ctx.send(embed=embed)
