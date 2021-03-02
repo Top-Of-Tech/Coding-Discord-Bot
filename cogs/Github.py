@@ -48,23 +48,23 @@ class Github(commands.Cog):
         embed = discord.Embed(title=user, url=user_object['url'], color=0x0066ff)
 
         if user_object['name'] != None:
-            embed.add_field(name="Name", value=str(user_object['name']), inline=True)
+            embed.add_field(name="Name", value=str(user_object['name']) + " .", inline=True)
         if user_object['company'] != None:
-            embed.add_field(name="Company", value=str(user_object['company']), inline=True)
+            embed.add_field(name="Company", value=str(user_object['company']) + " .", inline=True)
         if user_object['blog'] != None or user_object['blog'] == "":
-            embed.add_field(name="Blog", value=str(user_object['blog']), inline=True)
+            embed.add_field(name="Blog", value=str(user_object['blog']) + " .", inline=True)
         if user_object['location'] != None:
-            embed.add_field(name="Location", value=str(user_object['location']), inline=True)
+            embed.add_field(name="Location", value=str(user_object['location']) + " .", inline=True)
         if user_object['twitter_username'] != None:
-            embed.add_field(name="Twitter Username", value=str(user_object['location']), inline=True)
+            embed.add_field(name="Twitter Username", value=str(user_object['location']) + " .", inline=True)
         if user_object['bio'] != None:
-            embed.add_field(name="Bio", value=str(user_object['bio']), inline=True)
+            embed.add_field(name="Bio", value=str(user_object['bio']) + " .", inline=True)
         
-        embed.add_field(name="Repos", value=user_object['public_repos'], inline=True)
-        embed.add_field(name="Gists", value=user_object['public_gists'], inline=True)
-        embed.add_field(name="Followers", value=user_object['followers'], inline=True)
-        embed.add_field(name="Following", value=user_object['following'], inline=True)
-        embed.add_field(name="Created At", value=user_object['created_at'].split('T')[0], inline=True)
+        embed.add_field(name="Repos", value=user_object['public_repos'] + " .", inline=True)
+        embed.add_field(name="Gists", value=user_object['public_gists'] + " .", inline=True)
+        embed.add_field(name="Followers", value=user_object['followers'] + " .", inline=True)
+        embed.add_field(name="Following", value=user_object['following'] + " .", inline=True)
+        embed.add_field(name="Created At", value=user_object['created_at'].split('T')[0] + " .", inline=True)
         embed.set_thumbnail(url=user_object['avatar_url'])
 
         await ctx.send(embed=embed)
