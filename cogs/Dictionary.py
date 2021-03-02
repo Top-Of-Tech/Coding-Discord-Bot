@@ -19,7 +19,7 @@ class Dictionary(commands.Cog):
             meaning_string = ""
 
             for meaning in meanings_list:
-                meaning_string.append(f"{meaning};\n")
+                meaning_string += f"{meaning};\n"
 
             embed.add_field(name=part_of_speech, value=meaning_string)
 
