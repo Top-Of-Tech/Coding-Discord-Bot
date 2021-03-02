@@ -12,7 +12,7 @@ class Github(commands.Cog):
     # ---------------------------------------------------
 
     # Fetches specified Github repository
-    @commands.command(aliases=["gh"])
+    @commands.command(aliases=["gh", "ghrepo"])
     async def github(self, ctx, repo):
         """Command to get info on github repositories.\nUsage: `.cs github (full_repo_name)`"""
 
@@ -35,6 +35,8 @@ class Github(commands.Cog):
         embed.add_field(
             name="Description", value=f"{repo_object['description']}", inline=True
         )
+
+        await ctx.send(embed=embed)
 
     # ---------------------------------------------------
 
@@ -63,7 +65,7 @@ class Github(commands.Cog):
         embed.add_field(name="Followers", value=user_object['followers'], inline=True)
         embed.add_field(name="Following", value=user_object['following'], inline=True)
         embed.add_field(name="Created At", value=user_object['created_at'].split('T')[0], inline=True)
-        embed.set_thumbnail(user_object['avatar_url'])
+        embed.set_thumbnail(url=user_object['avatar_url'])
 
         await ctx.send(embed=embed)
 
@@ -72,7 +74,7 @@ class Github(commands.Cog):
     # Fetches specified Gitub organization
     @commands.command(aliases=["ghorg", "githuborg"])
     async def github_organization(self, ctx, org):
-        org_object = requests.get(f"https://api.github.com/orgs/{org}")
+        org_object = requests.get(f"https://api.github.com/orgs/{org}").json()
 
         embed = discord.Embed(title=org, url=org_object['url'], color=0x0066ff)
         
@@ -90,7 +92,7 @@ class Github(commands.Cog):
         embed.add_field(name="Repos", value=org_object['public_repos'], inline=True)
         embed.add_field(name="Gists", value=org_object['public_gists'], inline=True)
         embed.add_field(name="Created At", value=org_object['created_at'].split('T')[0], inline=True)
-        embed.set_thumbnail(org_object['avatar_url'])
+        embed.set_thumbnail(url=org_object['avatar_url'])
 
         await ctx.send(embed=embed)
 

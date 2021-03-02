@@ -9,7 +9,7 @@ class Dictionary(commands.Cog):
     # ---------------------------------------------------
 
     # Gives you the definition(s) of the word
-    @commands.command()
+    @commands.command(aliases=["def"])
     async def definition(self, ctx, *, word):
         meanings = PyDictionary(word.lower()).getMeanings()
 

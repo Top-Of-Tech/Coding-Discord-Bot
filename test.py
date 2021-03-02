@@ -1,3 +1,3 @@
-from PyDictionary import PyDictionary
+import requests
 
-print(PyDictionary("Morning").getMeanings())
+print(requests.get("https://api.github.com/orgs/Connection-Software").json())
