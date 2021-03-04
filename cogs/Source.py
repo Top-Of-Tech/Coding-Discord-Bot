@@ -13,7 +13,7 @@ class Source(commands.Cog):
 
 	@commands.command(aliases=["gsc", "src"])
 	async def get_source_code(self, ctx, command):
-		"""Get the code for any bot command!\nUsage: `.cs source (command)`"""
+		"""Get the code for any bot command!\nUsage: `.cs src (command)`"""
 
 		cmd = self.client.get_command(command)
 		if cmd is None:
