@@ -46,7 +46,7 @@ class Source(commands.Cog):
 # ---------------------------------------------------
 
 	@commands.command(aliases=["bsrc"])
-	async def bot_source(self, ctx):
+	async def source_code(self, ctx):
 		"""Get a link for the Github repository!\nUsage: `.cs bot_source`"""
 
 		await ctx.send("https://github.com/Connection-Software/Discord-Bot")
