@@ -16,7 +16,7 @@ class Logging(commands.Cog):
             embed = discord.Embed(
                 title="Edited Message",
                 description=before.channel.mention,
-                color=0x0066FF,
+                color=0xbd8306,
             )
 
             embed.add_field(name="Before", value=before.content, inline=True)
@@ -36,7 +36,7 @@ class Logging(commands.Cog):
             embed = discord.Embed(
                 title="Deleted Message",
                 description=before.channel.mention,
-                color=0x0066FF,
+                color=0x852c2a,
             )
             embed.add_field(
                 name="Message", value=before.content, inline=True
