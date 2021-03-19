@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 class Logging(commands.Cog):
+    """Maintain server logs! There are no commands under this cog."""
     def __init__(self, client):
         self.client = client
 
@@ -18,8 +19,8 @@ class Logging(commands.Cog):
                 color=0x0066FF,
             )
 
-            embed.add_field(name="Before", value=f"```{before.content}```", inline=True)
-            embed.add_field(name="After", value=f"```{after.content}```", inline=True)
+            embed.add_field(name="Before", value=before.content, inline=True)
+            embed.add_field(name="After", value=after.content, inline=True)
             embed.add_field(name="Author", value=f"{before.author.mention}")
 
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nEdited at: {after.edited_at.strftime('%d-%m-%y at %H:%M')}\nMessage URL: {before.jump_url}\nMessage ID: {before.id}"
@@ -39,7 +40,7 @@ class Logging(commands.Cog):
                 color=0x0066FF,
             )
             embed.add_field(
-                name="Message", value=f"```{before.content}```", inline=True
+                name="Message", value=before.content, inline=True
             )
             embed.add_field(name="Author", value=f"{before.author.mention}")
             text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
