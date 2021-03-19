@@ -21,9 +21,8 @@ class Logging(commands.Cog):
 
             embed.add_field(name="Before", value=before.content, inline=True)
             embed.add_field(name="After", value=after.content, inline=True)
-            embed.add_field(name="Author", value=f"{before.author.mention}")
 
-            text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nEdited at: {after.edited_at.strftime('%d-%m-%y at %H:%M')}\nMessage URL: {before.jump_url}\nMessage ID: {before.id}"
+            text = f"Author: {before.author.mention}\nTime: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nEdited at: {after.edited_at.strftime('%d-%m-%y at %H:%M')}\nMessage URL: {before.jump_url}\nMessage ID: {before.id}"
             embed.add_field(name="Info", value=text, inline=False)
 
             await self.client.logs_channel.send(embed=embed)
@@ -42,8 +41,7 @@ class Logging(commands.Cog):
             embed.add_field(
                 name="Message", value=before.content, inline=True
             )
-            embed.add_field(name="Author", value=f"{before.author.mention}")
-            text = f"Time: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
+            text = f"Author: {before.author.mention}\nTime: {before.created_at.strftime('%d-%m-%y at %H:%M')}\nMessage ID: {before.id}"
             embed.add_field(name="Info", value=text, inline=False)
             await self.client.logs_channel.send(embed=embed)
     
